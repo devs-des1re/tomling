@@ -61,12 +61,12 @@ def test_read_toml():
     # Test basic toml
     toml_data = 'name = "Alice"'
     result = read_toml(toml_data)
-    assert '"Alice"' in result
+    assert result["name"] == "Alice"
 
     # Test bytes passing
     toml_data = b'name = "Alice"'
     result = read_toml(toml_data)
-    assert '"Alice"' in result
+    assert result["name"] == "Alice"
 
     # Test array on tables toml
     toml_data = '''
@@ -75,9 +75,8 @@ name = "apple"
 color = "red"
 '''
     result = read_toml(toml_data)
-    data = json.loads(result)
-    assert data["fruit"]["name"] == "apple"
-    assert data["fruit"]["color"] == "red"
+    assert result["fruit"]["name"] == "apple"
+    assert result["fruit"]["color"] == "red"
 
     # Test multiline array edge
     toml_data = '''
@@ -88,11 +87,9 @@ values = [
 ]
 '''
     result = read_toml(toml_data)
-    data = json.loads(result)
-    assert data["values"] == [10, 20, 30]
+    assert result["values"] == [10, 20, 30]
 
     # Test stripped comments
     toml_data = 'key = "value" # comment'
     result = read_toml(toml_data)
-    data = json.loads(result)
-    assert data["key"] == "value"
+    assert result["key"] == "value"
