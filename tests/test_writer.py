@@ -1,6 +1,7 @@
 """Tests writer module"""
 import dataclasses
-from tomling.writer import _write_dict, _write_value, write_toml
+import pytest
+from tomling.writer import _write_dict, _write_value, write_toml, InvalidDictError
 
 @dataclasses.dataclass
 class CustomObject:
@@ -30,10 +31,6 @@ def test_write_value():
     value = [{"a": 1}, {"b": 2}]
     result = _write_value(value)
     assert result.startswith("[{") and "}" in result # Tests list of dicts
-
-    obj = CustomObject()
-    result = _write_value(obj)
-    assert result == "CustomObject" # Test else branch
 
 def test_write_dict():
     """Tests _write_dict function
@@ -75,3 +72,14 @@ def test_write_toml():
     assert "1" in toml_data
     assert "2" in toml_data
     assert "3" in toml_data
+
+def test_invalid_dict_errors():
+    """Tests exceptions
+    """
+    with pytest.raises(InvalidDictError):
+        obj = CustomObject()
+        _write_value(obj)
+
+    with pytest.raises(InvalidDictError):
+        data = {"key": CustomObject()}
+        _write_dict(data)

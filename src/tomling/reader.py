@@ -3,6 +3,7 @@ import ast
 import re
 from typing import Union
 
+from .exceptions import DuplicateKeysError, InvalidTomlError
 
 def _ensure_path(d: dict, path):
     """"""
@@ -28,7 +29,9 @@ def _set_key(d: dict, path, key, value):
         return # Nothing to set
 
     parent = _ensure_path(d, full[:-1]) # Ensure intermediate dicts exist
-    parent[full[-1]] = value # Set value at final key
+    if full[-1] in parent:
+        raise DuplicateKeysError(f"You have passed duplicate keys which are invalid in toml '{'.'.join(full)}'")
+    parent[full[-1]] = value
 
 def _read_value(s: str):
     s = s.strip() # Remove surrounding whitespace
@@ -43,14 +46,15 @@ def _read_value(s: str):
     # Check numbers, lists, tuples
     try:
         return ast.literal_eval(s)
-    except Exception:
+    except Exception as error:
         if s.startswith('"') and s.endswith('"'):
             return s[1:-1].encode("utf-8").decode("unicode_escape") # Basic string
 
         if s.startswith("'") and s.endswith("'"):
             return s[1:-1] # Literal String
 
-        return s # Fallback string
+        # Raise instead of return
+        raise InvalidTomlError(f"You have passed invalid toml values '{s}'") from error
 
 def read_toml(data: Union[str, bytes]) -> str:
     """Converts toml file to Python dict
@@ -60,6 +64,10 @@ def read_toml(data: Union[str, bytes]) -> str:
 
     Returns:
         str: Returns Python dict
+
+    Raises:
+        DuplicateKeyError: If there are duplicate keys found in the toml file, this will be raised
+        InvalidTomlError: If there are invalid parts of toml in your file, this will be raised
     """
     if isinstance(data, (bytes, bytearray)):
         data = data.decode("utf-8") # Decodes bytes

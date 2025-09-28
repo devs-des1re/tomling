@@ -1,7 +1,7 @@
 """Tests reader module"""
 import pytest
 from tomling import _ensure_path, _read_value, _set_key, read_toml
-
+from tomling import DuplicateKeysError, InvalidTomlError
 
 def test_ensure_path_():
     """Tests _ensure_path function
@@ -39,7 +39,6 @@ def test_set_key():
     ("(1,2,3)", (1,2,3)),
     ('"hello"', "hello"),
     ("'world'", "world"),
-    ("unquoted", "unquoted"),
     ('"Hello\nWorld"', "Hello\nWorld"),
     ("'Hello\nWorld'", "Hello\nWorld")
 ])
@@ -92,3 +91,17 @@ values = [
     toml_data = 'key = "value" # comment'
     result = read_toml(toml_data)
     assert result["key"] == "value"
+
+def test_invalid_toml_errors():
+    """Tests exceptions
+    """
+    with pytest.raises(DuplicateKeysError):
+        toml_data = """
+[header1]
+a = 1
+a = 2
+"""
+        read_toml(toml_data)
+
+    with pytest.raises(InvalidTomlError):
+        _read_value("not_a_valid_value@@@@@")

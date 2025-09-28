@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "tomling"
 description = "Reads and writes toml by tomling!"
 readme = "README.md"
-version = "0.0.3"
+version = "0.1.0"
 requires-python = ">=3.10"
 license = { file = "LICENSE" }
 

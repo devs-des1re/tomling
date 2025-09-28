@@ -1,4 +1,5 @@
 """Tomling writer module"""
+from .exceptions import InvalidDictError
 
 def _write_value(value, indent=4):
     if isinstance(value, str): # Check if str
@@ -26,7 +27,7 @@ def _write_value(value, indent=4):
         items = ", ".join(f"{k}={_write_value(v, indent)}" for k, v in value.items())
         return f"{{{items}}}"
 
-    return str(value) # Fallback
+    raise InvalidDictError(f"You have passed a invalid dict '{value}'")
 
 def _write_dict(d, parent_path=None):
     if parent_path is None:
@@ -35,6 +36,11 @@ def _write_dict(d, parent_path=None):
     lines = []
 
     for k, v in d.items():
+        allowed_types = (str, int, float, bool, list, dict)
+
+        if not isinstance(v, allowed_types):
+            raise InvalidDictError("You have passed a invalid object")
+
         current_path = parent_path = [k]
 
         if isinstance(v, dict):
@@ -67,5 +73,8 @@ def write_toml(data: dict) -> str:
 
     Returns:
         str: Formatted toml string
+
+    Exceptions:
+        InvalidDictError: When a invalid object is passed, this will be raised
     """
     return _write_dict(data)
