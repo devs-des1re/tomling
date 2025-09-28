@@ -4,7 +4,7 @@ from .writer import write_toml, _write_dict, _write_value
 
 __all__  = ["read_toml", "write_toml"]
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 __author__ = "devs_des1re"
 __license__ = "MIT"
 __email__ = "arjunbrij8811@gmail.com"
