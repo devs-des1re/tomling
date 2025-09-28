@@ -1,5 +1,4 @@
 """Tests reader module"""
-import json
 import pytest
 from tomling import _ensure_path, _read_value, _set_key, read_toml
 

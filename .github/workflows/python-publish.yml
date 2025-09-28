@@ -53,6 +53,7 @@ jobs:
 
   publish-to-testpypi:
     name: Publish Python 🐍 distribution 📦 to TestPyPI
+    if: "!startsWith(github.ref, 'refs/tags/')"  # only publish to TestPyPI if not tag pushes
     needs:
     - build
     runs-on: ubuntu-latest
@@ -74,4 +75,3 @@ jobs:
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         repository-url: https://test.pypi.org/legacy/
-      
