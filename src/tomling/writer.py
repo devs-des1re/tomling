@@ -63,7 +63,7 @@ def write_toml(data: dict) -> str:
     """Converts json to toml
 
     Args:
-        data (dict): The json you want to convert
+        data (dict): The dict you want to convert
 
     Returns:
         str: Formatted toml string

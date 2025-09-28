@@ -54,13 +54,13 @@ def _read_value(s: str):
         return s # Fallback string
 
 def read_toml(data: Union[str, bytes]) -> str:
-    """Converts toml file to json
+    """Converts toml file to Python dict
 
     Args:
         data (Union[str, bytes]): The toml file/str you want to pass
 
     Returns:
-        str: Returns formatted json
+        str: Returns Python dict
     """
     if isinstance(data, (bytes, bytearray)):
         data = data.decode("utf-8") # Decodes bytes
@@ -125,4 +125,4 @@ def read_toml(data: Union[str, bytes]) -> str:
 
             continue
 
-    return json.dumps(out)
+    return out

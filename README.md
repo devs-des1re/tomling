@@ -4,7 +4,7 @@
 
 tomling
 ===
-Tomling is a library which can be used to convert `toml` format to `json` format and `json` format to `toml` format.
+Tomling is a library which can be used to convert `toml` format to Python `dict` format and Python `dict` format to `toml` format.
 
 How to install?
 ===
