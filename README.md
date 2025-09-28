@@ -1,4 +1,5 @@
 [![PyPI version](https://img.shields.io/pypi/v/tomling?color=green)](https://pypi.org/project/tomling)
+[![codecov](https://codecov.io/gh/devs-des1re/tomling/branch/main/graph/badge.svg?token=YOUR_CODECOV_TOKEN)](https://codecov.io/gh/devs-des1re/tomling)
 ![pylint](https://img.shields.io/badge/pylint-10.00-green)
 
 tomling
