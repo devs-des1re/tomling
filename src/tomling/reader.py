@@ -1,6 +1,5 @@
 """Tomling reader module"""
 import ast
-import json
 import re
 from typing import Union
 
